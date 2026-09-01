@@ -21,7 +21,6 @@
 //
 //     {"id":3,"title":"작업표준서"}     ← 본문
 
-
 // ── 섹션 1: 메서드 — 무엇을 할 것인가 ──
 
 // 같은 /documents 경로라도 메서드에 따라 하는 일이 다릅니다.
@@ -71,7 +70,6 @@ console.log(무슨일인가("DELETE", "/documents/12"));
 
 // ✏️ 직접 해보기 1 — 무슨일인가("PATCH", "/documents/5") 의 결과를 예상하고 확인하세요.
 
-
 // ── 섹션 2: GET 과 POST 의 진짜 차이 ──
 
 // 가장 헷갈리는 부분입니다. 핵심은 '데이터를 어디에 싣는가' 입니다.
@@ -116,7 +114,8 @@ console.log(본문.title, 본문.writer);
 
 // ✏️ 직접 해보기 2 — '{"id":5,"count":"3"}' 을 parse 해서
 //                    count 를 숫자로 바꿔 1 을 더해 출력해 보세요.
-
+const 본문1 = JSON.parse('{"id":5,"count":"3"}');
+console.log(Number(본문1.count) + 1);
 
 // ── 섹션 3: 상태코드 — 결과를 숫자로 ──
 
@@ -171,7 +170,6 @@ console.log(isOk(200), isOk(201), isOk(404), isOk(500));
 
 // ✏️ 직접 해보기 3 — 상태설명(301) 과 isOk(301) 을 각각 예상하고 확인하세요.
 
-
 // ── 섹션 4: 실제로 쓰는 상태코드 ──
 
 // 수십 개가 있지만 이 여덟 개면 충분합니다.
@@ -219,7 +217,6 @@ console.log(응답코드("제목이 비어 있음"));
 
 // ✏️ 직접 해보기 4 — "권한 없음" 상황을 표에 추가하고 그 코드를 출력해 보세요.
 
-
 // ── 섹션 5: 헤더 — 본문에 대한 설명서 ──
 
 // 요청과 응답에는 본문 말고 '헤더' 가 붙습니다.
@@ -266,6 +263,10 @@ console.log(헤더["content-type"].includes("application/json"));
 // ✏️ 직접 해보기 5 — content-type 이 "multipart/form-data; boundary=xyz" 일 때
 //                    파일 업로드인지 확인하는 코드를 써 보세요.
 
+const 헤더1 = {
+  "content-type": "multipart/form-data"
+  "content-length": "42",
+};
 
 // ── 섹션 6: 자주 하는 실수 ──
 
@@ -301,7 +302,6 @@ console.log(헤더["content-type"].includes("application/json"));
 //   코드에서 터짐   → 500 (서버 잘못)
 //   404 를 500 으로 주면 사용자가 "서버가 고장났나?" 하고 오해합니다.
 
-
 // ── 정리 ──
 
 // 1. 경로는 명사, 동작은 메서드. GET / POST / PUT / PATCH / DELETE 다섯이면 충분하다.
@@ -312,7 +312,6 @@ console.log(헤더["content-type"].includes("application/json"));
 // 6. fetch 는 404·500 을 실패로 안 친다. res.ok 를 직접 봐야 한다.
 // 7. Content-Type 은 본문의 형식을 알려 주는 송장이다. 빠뜨리면 상대가 못 읽는다.
 // 8. 헤더 이름은 소문자로 읽는다.
-
 
 // ============================================================
 // 직접 해보기 정답

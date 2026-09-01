@@ -15,7 +15,6 @@
 // 로그 남기기, 로그인 확인, 권한 확인, 요청 시간 재기 —
 // 실무 서버 코드의 절반이 미들웨어입니다.
 
-
 // ── 섹션 1: 미들웨어는 '거쳐 가는 함수' 입니다 ──
 
 // 요청이 라우트에 도착하기 전에 들르는 곳이라고 생각하세요.
@@ -40,7 +39,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-
 
 // ── 섹션 2: next 를 부르면 다음으로 갑니다 ──
 
@@ -75,7 +73,6 @@ app.get("/order", (req, res) => {
 // ★ 이름은 마음대로 지어도 됩니다. req.기록, req.user, req.시작시각 ...
 //   다만 Express 가 이미 쓰는 이름(req.body, req.query 등)은 피하세요.
 
-
 // ── 섹션 3: next 를 안 부르면 거기서 멈춥니다 ──
 
 app.use("/blocked", (req, res, next) => {
@@ -107,7 +104,6 @@ app.get("/blocked", (req, res) => {
 //
 //   if 를 썼다면 else 쪽도 확인하세요. 한쪽만 next() 를 부르는 실수가 흔합니다.
 
-
 // ── 섹션 4: app.use 에 주소를 주면 그 아래만 ──
 
 app.use("/admin", (req, res, next) => {
@@ -116,6 +112,7 @@ app.use("/admin", (req, res, next) => {
 });
 
 app.get("/admin/users", (req, res) => {
+  console.log(req.기록);
   res.json({ 관리자영역: req.관리자영역 === true });
 });
 
@@ -140,7 +137,6 @@ app.get("/public/info", (req, res) => {
 // 주소를 안 주면 모든 요청에 걸립니다.
 // 로그 남기기처럼 전부에 해야 하는 일은 주소를 안 줍니다.
 // 로그인 확인처럼 일부만 해야 하는 일은 주소를 줍니다.
-
 
 // ── 섹션 5: 라우트 하나에만 붙이기 ──
 
@@ -174,7 +170,6 @@ app.get("/other-route", (req, res) => {
 // Express 에는 '미들웨어' 라는 한 종류만 있습니다.
 // 라우트 함수는 "next 를 안 쓰고 응답을 보내는 미들웨어" 일 뿐입니다.
 
-
 // ── 섹션 6: 배열로 묶어서 재사용하기 ──
 
 function 확인1(req, res, next) {
@@ -199,7 +194,6 @@ app.get("/checked", 검사세트, (req, res) => {
 // 자주 같이 쓰는 미들웨어들은 배열로 묶어 두면 편합니다.
 //   app.get("/a", 검사세트, ...)
 //   app.get("/b", 검사세트, ...)
-
 
 // ── 섹션 7: express.json() 도 미들웨어였습니다 ──
 
@@ -230,7 +224,6 @@ app.post("/echo", (req, res) => {
 //   옵션을 줄 수 있어서 이렇게 만들어져 있습니다.
 //     express.json({ limit: "1mb" })   본문 크기 제한
 
-
 app.use((req, res) => {
   res.status(404).json({ error: "그런 주소가 없습니다" });
 });
@@ -238,14 +231,14 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error(`[에러] ${req.method} ${req.path} — ${err.message}`);
   const 코드 = err.status || 500;
-  res.status(코드).json({ error: 코드 === 500 ? "서버에서 문제가 생겼습니다" : err.message });
+  res
+    .status(코드)
+    .json({ error: 코드 === 500 ? "서버에서 문제가 생겼습니다" : err.message });
 });
-
 
 app.listen(PORT, () => {
   console.log(`서버가 켜졌습니다.  http://localhost:${PORT}/order`);
 });
-
 
 // ============================================================
 // 미들웨어를 등록하는 네 가지 방법
@@ -257,7 +250,6 @@ app.listen(PORT, () => {
 //   app.get("/x", [함수1, 함수2], ...) 여러 개를 배열로
 //
 // 어느 것이든 (req, res, next) 모양은 같습니다.
-
 
 // ============================================================
 // 직접 해 볼 것
@@ -282,7 +274,6 @@ app.listen(PORT, () => {
 // ✏️ 직접 해보기 5 — 섹션 3의 미들웨어에서 응답을 보낸 '뒤에' next() 를 불러 보세요.
 //                    터미널에 어떤 에러가 나나요?
 //                    (확인했으면 반드시 되돌리세요)
-
 
 // ── 자주 하는 실수 ──
 
@@ -312,7 +303,6 @@ app.listen(PORT, () => {
 //   app.use(express.json) → 미들웨어가 아니라 '만드는 함수' 를 등록한 것입니다.
 //   이 함수는 next() 를 부르지 않아서, [실수 1]과 똑같이
 //   모든 요청이 응답 없이 영영 멈춥니다. 에러도 안 나서 원인을 찾기 어렵습니다.
-
 
 // ── 정리 ──
 

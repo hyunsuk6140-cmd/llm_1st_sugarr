@@ -20,7 +20,6 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
 // ── 섹션 1: 본문을 읽으려면 이 한 줄이 필요합니다 ──
 
 // ★★ 이 줄이 없으면 req.body 가 영원히 undefined 입니다.
@@ -46,7 +45,6 @@ app.use(express.urlencoded({ extended: true }));
 //   지금은 "라우트보다 위에 적어야 한다" 만 기억하세요.
 //   아래에 적으면 라우트가 먼저 실행되어 버려서 소용이 없습니다.
 
-
 // ── 섹션 2: 경로에서 (req.params) ──
 
 app.get("/documents/:id/logs/:logId", (req, res) => {
@@ -62,14 +60,12 @@ app.get("/documents/:id/logs/:logId", (req, res) => {
 // 콜론을 붙인 것들이 전부 req.params 에 들어옵니다.
 // 언제나 글자입니다. 개념02 에서 본 그대로입니다.
 
-
 // ── 섹션 3: 쿼리에서 (req.query) ──
 
 app.get("/documents", (req, res) => {
-  res.json({
-    query: req.query,
-    page타입: typeof req.query.page,
-  });
+  const tags = [].concat(req.query.tag || []);
+
+  res.json({ tags });
 });
 
 // 확인: GET /documents?type=표준&page=2
@@ -104,7 +100,6 @@ app.get("/documents", (req, res) => {
 //
 //     const tag = Array.isArray(req.query.tag) ? req.query.tag[0] : req.query.tag;
 
-
 // ── 섹션 4: 본문에서 (req.body) ──
 
 app.post("/documents", (req, res) => {
@@ -123,7 +118,6 @@ app.post("/documents", (req, res) => {
 //
 //   경로·쿼리는 전부 글자, 본문은 타입이 살아 있음.
 //   이 차이가 "왜 어떤 건 Number 를 해야 하고 어떤 건 안 해도 되나" 의 답입니다.
-
 
 // ── 섹션 5: ★ 본문이 undefined 로 나오는 두 경우 ──
 
@@ -160,7 +154,6 @@ app.post("/documents", (req, res) => {
 //   본문을 분명히 보냈는데 undefined 라면 99% 이 문제입니다.
 //   Postman 의 Body 탭에서 raw 오른쪽 드롭다운이 JSON 인지 확인하세요.
 
-
 // ── 섹션 6: JSON 이 깨져서 오면 ──
 
 // 확인: POST /documents {title:"따옴표없음"}
@@ -176,7 +169,6 @@ app.post("/documents", (req, res) => {
 // ★ 다만 지금은 응답 '내용' 이 HTML 입니다. 브라우저로 보면 에러 화면이 나옵니다.
 //   API 서버라면 JSON 으로 바꿔 줘야 합니다. 개념04 에서 합니다.
 
-
 // ── 섹션 7: 값을 꺼낼 때의 정석 ──
 
 app.post("/equipments", (req, res) => {
@@ -189,7 +181,9 @@ app.post("/equipments", (req, res) => {
   if (!line) 빠진것.push("line");
 
   if (빠진것.length > 0) {
-    return res.status(400).json({ error: `${빠진것.join(", ")} 을(를) 넣어 주세요` });
+    return res
+      .status(400)
+      .json({ error: `${빠진것.join(", ")} 을(를) 넣어 주세요` });
   }
 
   // ③ 여기부터는 믿고 써도 됩니다
@@ -216,7 +210,6 @@ app.post("/equipments", (req, res) => {
 //   req.body.name, req.body.line 을 매번 쓰면 길어집니다.
 //   한 번 꺼내 두면 아래 코드가 짧아집니다. (JS자료 09단원)
 
-
 // ── 섹션 8: 헤더에서 (req.headers / req.get) ──
 
 app.get("/headers", (req, res) => {
@@ -238,7 +231,6 @@ app.get("/headers", (req, res) => {
 //   req.get("Content-Type")     본문이 무슨 형식인가
 //   req.get("Authorization")    로그인 증표 — PART 4 에서 씁니다
 //   req.get("User-Agent")       어떤 프로그램이 보냈나
-
 
 // ── 섹션 9: 어디에 담아야 하나 ──
 
@@ -264,11 +256,9 @@ app.get("/decide", (req, res) => {
 // 비밀번호를 쿼리에 담으면 안 됩니다. 주소는 서버 기록에 그대로 남습니다.
 // 브라우저 기록에도 남고, 남에게 링크를 보낼 때 딸려 갑니다.
 
-
 app.listen(PORT, () => {
   console.log(`서버가 켜졌습니다.  http://localhost:${PORT}/documents`);
 });
-
 
 // ============================================================
 // 03단원과 나란히 놓고 보기
@@ -286,7 +276,6 @@ app.listen(PORT, () => {
 // 03단원의 서른 줄이 Express 에서는 세 줄입니다.
 // 그런데 사라진 게 아니라 express.json() 안에 들어 있을 뿐입니다.
 // 안에서 무슨 일이 벌어지는지 알기 때문에, 안 될 때 어디를 볼지 알 수 있습니다.
-
 
 // ============================================================
 // 직접 해 볼 것
@@ -309,7 +298,6 @@ app.listen(PORT, () => {
 // ✏️ 직접 해보기 5 — /documents?tag=a&tag=b 로 보내 보고,
 //                    tag 가 하나든 여럿이든 항상 '배열' 로 다루는 코드를 써 보세요.
 //                    (힌트: [].concat(req.query.tag || []))
-
 
 // ── 자주 하는 실수 ──
 
@@ -341,7 +329,6 @@ app.listen(PORT, () => {
 // [실수 7] 비밀번호를 쿼리에 담음
 //   /login?password=1234 는 서버 기록에 그대로 남습니다.
 //   비밀은 반드시 본문(POST)에 담으세요.
-
 
 // ── 정리 ──
 

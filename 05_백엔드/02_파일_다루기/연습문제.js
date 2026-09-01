@@ -17,7 +17,6 @@ const 작업폴더 = path.join(__dirname, "연습_작업");
 fs.rmSync(작업폴더, { recursive: true, force: true });
 fs.mkdirSync(작업폴더, { recursive: true });
 
-
 // ───── 문제 1 ───── (개념01)
 // "uploads", "2026", "03", "보고서.pdf" 네 조각을 이어 붙인 경로를 출력하세요.
 //
@@ -26,8 +25,7 @@ fs.mkdirSync(작업폴더, { recursive: true });
 //
 // (윈도우 기준입니다. 맥·리눅스는 uploads/2026/03/보고서.pdf 로 나옵니다)
 
-// TODO: 여기에 코드를 쓰세요
-
+console.log(path.join("uploads", "2026", "03", "보고서.pdf"));
 
 // ───── 문제 2 ───── (개념01)
 // 아래 파일 이름이 PDF 인지 판정해 true/false 로 출력하세요.
@@ -40,8 +38,7 @@ const 파일명1 = "작업표준서.PDF";
 // 기대 출력:
 // true
 
-// TODO: 여기에 코드를 쓰세요
-
+console.log(path.extname(파일명1).toLowerCase() === ".pdf");
 
 // ───── 문제 3 ───── (개념01)
 // 위 파일명에서 확장자를 뗀 이름만 출력하세요.
@@ -53,8 +50,9 @@ const 파일명1 = "작업표준서.PDF";
 // 기대 출력:
 // 작업표준서
 
-// TODO: 여기에 코드를 쓰세요
+const 확장자 = path.extname(파일명1);
 
+console.log(path.basename(파일명1, 확장자));
 
 // ───── 문제 4 ───── (개념02)
 // 같은 폴더의 샘플_문서.txt 를 읽어서 첫 줄만 출력하세요.
@@ -65,8 +63,9 @@ const 파일명1 = "작업표준서.PDF";
 // 기대 출력:
 // 작업표준서
 
-// TODO: 여기에 코드를 쓰세요
-
+const 샘플경로 = path.join(__dirname, "샘플_문서.txt");
+const text = fs.readFileSync(샘플경로, "utf-8");
+console.log(text.split("\n")[0]);
 
 // ───── 문제 5 ───── (개념02)
 // 같은 파일에서 빈 줄을 뺀 줄 수를 출력하세요.
@@ -74,8 +73,8 @@ const 파일명1 = "작업표준서.PDF";
 // 기대 출력:
 // 4
 
-// TODO: 여기에 코드를 쓰세요
-
+const lines = text.split("\n").filter((line) => line !== "");
+console.log(lines.length);
 
 // ───── 문제 6 ───── (개념02)
 // 작업폴더 안에 "메모.txt" 를 만들고 "첫 줄\n" 을 쓰세요.
@@ -84,8 +83,9 @@ const 파일명1 = "작업표준서.PDF";
 // 기대 출력:
 // true
 
-// TODO: 여기에 코드를 쓰세요
-
+const 메모 = path.join(작업폴더, "메모.txt");
+fs.writeFileSync(메모, "첫 줄\n", "utf-8");
+console.log(fs.existsSync(메모));
 
 // ───── 문제 7 ───── (개념02)
 // 방금 만든 메모.txt 에 "둘째 줄\n" 과 "셋째 줄\n" 을 이어 붙이고,
@@ -96,8 +96,11 @@ const 파일명1 = "작업표준서.PDF";
 // 기대 출력:
 // 3
 
-// TODO: 여기에 코드를 쓰세요
+fs.appendFileSync(메모, "둘째 줄\n", "utf-8");
+fs.appendFileSync(메모, "셋째 줄\n", "utf-8");
 
+const 메모내용 = fs.readFileSync(메모, "utf-8");
+console.log(메모내용.trim().split("\n").length);
 
 // ───── 문제 8 ───── (개념02)
 // 없는 파일을 읽어 보고, 에러 코드만 출력하세요.
@@ -106,8 +109,11 @@ const 파일명1 = "작업표준서.PDF";
 // 기대 출력:
 // ENOENT
 
-// TODO: 여기에 코드를 쓰세요
-
+try {
+  fs.readFileSync(path.join(__dirname, "없는파일.txt"), "utf-8");
+} catch (error) {
+  console.log(error.code);
+}
 
 // ───── 문제 9 ───── (개념04)
 // 작업폴더 안에 "docs/2026/03" 을 한 번에 만들고, 있는지 확인해 출력하세요.
@@ -117,8 +123,9 @@ const 파일명1 = "작업표준서.PDF";
 // 기대 출력:
 // true
 
-// TODO: 여기에 코드를 쓰세요
-
+const 한번에 = path.join(작업폴더, "docs", "2026", "03");
+fs.mkdirSync(한번에, { recursive: true });
+console.log(fs.existsSync(한번에));
 
 // ───── 문제 10 ───── (개념04)
 // 아래 세 파일을 작업폴더에 만든 뒤,
@@ -132,8 +139,10 @@ fs.writeFileSync(path.join(작업폴더, "c.txt"), "C", "utf-8");
 // 기대 출력:
 // [ 'a.txt', 'c.txt', '메모.txt' ]
 
-// TODO: 여기에 코드를 쓰세요
-
+const txt목록 = fs
+  .readdirSync(작업폴더)
+  .filter((name) => path.extname(name) === ".txt");
+console.log(txt목록);
 
 // ───── 문제 11 ───── (개념04)
 // 작업폴더 안에서 '폴더' 인 것만 골라 이름을 출력하세요.
@@ -144,8 +153,11 @@ fs.writeFileSync(path.join(작업폴더, "c.txt"), "C", "utf-8");
 // 기대 출력:
 // [ 'docs' ]
 
-// TODO: 여기에 코드를 쓰세요
-
+const 폴더만 = fs
+  .readdirSync(작업폴더, { withFileTypes: true })
+  .filter((e) => e.isDirectory())
+  .map((e) => e.name);
+console.log("폴더만", 폴더만);
 
 // ───── 문제 12 ───── (개념05)
 // 아래 배열을 작업폴더의 "설비.json" 에 사람이 읽기 좋게 저장한 뒤,
@@ -161,9 +173,10 @@ const 설비들 = [
 // 기대 출력:
 // 프레스
 
-// TODO: 여기에 코드를 쓰세요
-
-
+const 설비파일 = path.join(작업폴더, "설비.json");
+fs.writeFileSync(설비파일, JSON.stringify(설비들, null, 2), "utf-8");
+const 설비읽기 = JSON.parse(fs.readFileSync(설비파일, "utf-8"));
+console.log(설비읽기[1].name);
 // ───── 문제 13 ───── [응용]
 // 업로드된 파일을 저장할 경로를 만드는 makeSavePath 함수를 만드세요.
 //
@@ -190,7 +203,6 @@ const 설비들 = [
 // TODO: 여기에 코드를 쓰세요
 // (두 번째 줄은 그 폴더가 실제로 만들어졌는지 확인해 출력하세요)
 
-
 // ───── 문제 14 ───── [도전]
 // 설비.json 을 비동기로 다루는 함수 세 개를 만들고 차례로 실행하세요.
 //
@@ -211,7 +223,6 @@ const 설비들 = [
 
 // TODO: 여기에 코드를 쓰세요
 // (추가하기("용접로봇", "C") 후 id / 이름 목록 / 삭제하기(2) 후 id 목록 순서로 출력)
-
 
 // ───── 문제 15 ───── (에러 확인 — 맨 마지막)
 // 아래 두 줄의 주석을 풀고 실행해서 어떤 에러가 나는지 확인하세요.

@@ -31,7 +31,6 @@
 
 const path = require("path");
 
-
 // ── 섹션 1: join — 경로 조각 이어 붙이기 ──
 
 console.log(path.join("uploads", "2026", "보고서.pdf"));
@@ -49,8 +48,8 @@ console.log(path.join("uploads", "..", "docs", "a.txt"));
 // 출력: docs\a.txt
 // uploads 로 들어갔다가 다시 나와서 docs 로 들어간 것이라 uploads 가 사라졌습니다.
 
+console.log(path.join("public", "images", "logo.png"));
 // ✏️ 직접 해보기 1 — path.join("public", "images", "logo.png") 를 출력해 보세요.
-
 
 // ── 섹션 2: 경로에서 정보 꺼내기 ──
 
@@ -85,6 +84,9 @@ console.log(parsed.base, parsed.name, parsed.ext);
 
 // ✏️ 직접 해보기 2 — "회의록_2026.docx" 에서 확장자와 확장자 뺀 이름을 각각 출력해 보세요.
 
+console.log(path.extname("회의록_2026.docx"));
+
+console.log(path.basename("회의록_2026.docx", ".docx"));
 
 // ── 섹션 3: 왜 이게 중요한가 — 파일 업로드 ──
 
@@ -118,6 +120,10 @@ console.log(path.join("uploads", "2026", newName));
 // ✏️ 직접 해보기 3 — "검사성적서.xlsx" 를 받아
 //                    "uploads/검사성적서_백업.xlsx" 경로를 만들어 출력해 보세요.
 
+const name = "검사성적서.xlsx";
+const a = path.extname(name);
+const b = path.basename(name, a);
+console.log(path.join("uploads", `${b}_백업${a}`));
 
 // ── 섹션 4: __dirname — 이 파일이 있는 폴더 ──
 
@@ -157,7 +163,8 @@ console.log(path.basename(__filename));
 // ✏️ 직접 해보기 4 — __dirname 과 process.cwd() 를 각각 통째로 찍어 보세요.
 //                    그다음 한 단계 위 폴더로 나가서(cd ..) 다시 실행해 보세요.
 //                    무엇이 바뀌고 무엇이 안 바뀌나요?
-
+console.log(__dirname);
+console.log(process.cwd());
 
 // ── 섹션 5: 절대 경로와 상대 경로 ──
 
@@ -186,7 +193,7 @@ console.log(path.isAbsolute(path.join(__dirname, "uploads")));
 // 출력: true
 
 // ✏️ 직접 해보기 5 — path.join(__dirname, "data", "설정.json") 을 출력해 보세요.
-
+console.log(path.join(__dirname, "data", "설정.json"));
 
 // ── 섹션 6: 자주 하는 실수 ──
 
@@ -224,7 +231,6 @@ console.log(path.extname("보고서.PDF").toLowerCase() === ".pdf");
 //         09단원에서 안전하게 처리하는 법을 배웁니다.
 //         지금은 "사용자 입력을 그대로 경로에 쓰면 위험하다" 만 기억하세요.
 
-
 // ── 정리 ──
 
 // 1. 경로는 직접 이어 붙이지 말고 path.join 을 쓴다. 운영체제 차이를 없애 준다.
@@ -234,7 +240,6 @@ console.log(path.extname("보고서.PDF").toLowerCase() === ".pdf");
 // 5. process.cwd() 는 '터미널이 있는 폴더'. 실행 위치에 따라 바뀐다.
 // 6. 파일을 실제로 다룰 때는 path.join(__dirname, ...) 형태를 쓴다.
 // 7. 사용자가 준 파일명을 검사 없이 경로에 붙이면 위험하다.
-
 
 // ============================================================
 // 직접 해보기 정답

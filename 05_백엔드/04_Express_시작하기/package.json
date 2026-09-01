@@ -1,0 +1,20 @@
+{
+  "name": "1",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "개념01_Express_시작하기.js",
+  "scripts": {
+    "dev": "nodemon 개념05_nodemon과_파일_나누기.js",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

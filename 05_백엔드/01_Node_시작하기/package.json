@@ -4,7 +4,7 @@
   "description": "01단원 실습용 프로젝트",
   "main": "개념01_Node란_무엇인가.js",
   "scripts": {
-    "start": "node 개념01_Node란_무엇인가.js",
+    "start": "node 개념04_에러_읽는_법.js",
     "hello": "node -e \"console.log('스크립트로 실행됐습니다')\""
   },
   "keywords": [

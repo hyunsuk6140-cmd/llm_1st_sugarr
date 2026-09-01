@@ -19,7 +19,6 @@ const path = require("path");
 // 이렇게 해야 어디서 실행하든 같은 파일을 가리킵니다.
 const 샘플경로 = path.join(__dirname, "샘플_문서.txt");
 
-
 // ── 섹션 1: 파일 읽기 ──
 
 const text = fs.readFileSync(샘플경로, "utf-8");
@@ -45,7 +44,7 @@ console.log(text.includes("김민준"));
 // 출력: true
 
 // ✏️ 직접 해보기 1 — 마지막 줄(작성일)만 꺼내어 출력해 보세요.
-
+console.log(lines[3]);
 
 // ── 섹션 2: "utf-8" 을 빼먹으면 ──
 
@@ -71,7 +70,6 @@ console.log(raw.toString("utf-8").split("\n")[0]);
 
 // ✏️ 직접 해보기 2 — utf-8 없이 읽은 것을 그대로 console.log 해 보세요.
 //                    어떻게 생겼나요?
-
 
 // ── 섹션 3: 파일 쓰기 ──
 
@@ -111,14 +109,14 @@ console.log(fs.readFileSync(출력경로, "utf-8").trim());
 
 // ✏️ 직접 해보기 3 — "메모.txt" 라는 파일에 자기 이름을 써 보세요.
 //                    그다음 탐색기에서 열어 확인하세요.
-
-
+fs.writeFileSync(path.join(__dirname, "메모.txt"), "정현숙", "utf-8");
 // ── 섹션 4: 이어 쓰기 ──
 
 // 덮어쓰지 않고 뒤에 붙이려면 appendFileSync 입니다.
 fs.appendFileSync(로그경로, "1번 접속\n", "utf-8");
 fs.appendFileSync(로그경로, "2번 접속\n", "utf-8");
 fs.appendFileSync(로그경로, "3번 접속\n", "utf-8");
+fs.appendFileSync(로그경로, "4번 접속\n", "utf-8");
 
 const 기록 = fs.readFileSync(로그경로, "utf-8");
 console.log(기록.trim().split("\n").length);
@@ -136,7 +134,6 @@ console.log(기록.trim().split("\n")[2]);
 
 // ✏️ 직접 해보기 4 — 로그경로에 "4번 접속" 을 한 줄 더 붙이고,
 //                    줄 수가 4가 되는지 확인해 보세요.
-
 
 // ── 섹션 5: 없는 파일을 읽으면 ──
 
@@ -179,7 +176,6 @@ console.log(안전하게읽기(샘플경로).split("\n")[0]);
 // ✏️ 직접 해보기 5 — 안전하게읽기 에 결과_기록.txt 경로를 넣어 보세요.
 //                    null 이 나올까요, 내용이 나올까요?
 
-
 // ── 섹션 6: 파일 지우기 ──
 
 const 임시경로 = path.join(__dirname, "임시파일.txt");
@@ -200,8 +196,10 @@ console.log(fs.existsSync(임시경로));
 
 // ✏️ 직접 해보기 6 — 파일을 만들고, 있는지 확인하고, 지우고, 다시 확인하는
 //                    네 줄을 직접 써 보세요.
-
-
+fs.writeFileSync(path.join(__dirname, "연습.txt"), "테스트", "utf-8");
+console.log(fs.existsSync(path.join(__dirname, "연습.txt")));
+fs.unlinkSync(path.join(__dirname, "연습.txt"));
+console.log(fs.existsSync(path.join(__dirname, "연습.txt")));
 // ── 섹션 7: 자주 하는 실수 ──
 
 // ★ 아래에서 SyntaxError 라고 적힌 것은 눈으로만 보세요. 주석을 풀지 마세요.
@@ -236,7 +234,6 @@ console.log(fs.existsSync(임시경로));
 //   실수: 파일이 없으면 ENOENT 로 프로그램이 죽습니다.
 //         existsSync 로 확인하거나 try/catch 로 감싸세요.
 
-
 // ── 정리 ──
 
 // 1. fs 는 Node 내장 모듈. 파일을 읽고 쓰고 지운다.
@@ -247,7 +244,6 @@ console.log(fs.existsSync(임시경로));
 // 6. unlinkSync 로 지운다. 휴지통을 거치지 않는다.
 // 7. 경로는 항상 path.join(__dirname, ...) 으로 만든다.
 // 8. 폴더는 자동으로 안 만들어진다. 없으면 ENOENT.
-
 
 // ============================================================
 // 직접 해보기 정답
