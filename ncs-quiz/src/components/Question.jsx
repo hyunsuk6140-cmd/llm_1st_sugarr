@@ -1,27 +1,37 @@
-function Question({ index, question, selectedAnswer, onAnswer }) {
+function Question({ question, selectedAnswer, showExplanation, onSelectAnswer }) {
+  const imageSrc = question.pageImage || question.image;
+  const showImageQuestion = question.renderAsImage && imageSrc;
+
   return (
-    <article className="question-card">
-      <div className="question-meta">
-        <span>{question.category}</span>
-        <strong>{index + 1}번</strong>
-      </div>
+    <>
+      <h2>{question.category}</h2>
 
-      <h3>{question.question}</h3>
+      {showImageQuestion ? (
+        <div className="question-image-panel">
+          <div className="question-image-header">
+            <strong>{question.sourceNo ? `${question.sourceNo}번` : "문제"}</strong>
+            {question.pageNumber && <span>PDF {question.pageNumber}쪽</span>}
+          </div>
+          <img src={imageSrc} alt={`${question.category} ${question.sourceNo || ""}번 문제`} />
+        </div>
+      ) : (
+        <p className="question">{question.question}</p>
+      )}
 
-      <div className="choice-list">
-        {question.choices.map((choice, choiceIndex) => (
+      <div className="choices">
+        {question.choices.map((choice, index) => (
           <button
-            key={choice}
+            key={`${index}-${choice}`}
             type="button"
-            className={selectedAnswer === choiceIndex ? "selected" : ""}
-            onClick={() => onAnswer(question.id, choiceIndex)}
+            className={selectedAnswer === index ? "selected" : ""}
+            disabled={showExplanation}
+            onClick={() => onSelectAnswer(index)}
           >
-            <span>{choiceIndex + 1}</span>
-            {choice}
+            {showImageQuestion ? `${index + 1}번` : `${index + 1}. ${choice}`}
           </button>
         ))}
       </div>
-    </article>
+    </>
   );
 }
 

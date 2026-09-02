@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import initialQuestions from "../src/data/questions.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = path.join(__dirname, "data");
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, "data");
 const DB_PATH = path.join(DATA_DIR, "db.json");
 const PORT = Number(process.env.PORT || 4000);
 const CATEGORY_ORDER = [
@@ -14,6 +14,7 @@ const CATEGORY_ORDER = [
   "의사소통능력",
   "문제해결능력",
   "자원관리능력",
+  "정보능력",
   "조직이해능력",
 ];
 

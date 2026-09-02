@@ -1,54 +1,50 @@
 import Question from "./Question.jsx";
 
-function Quiz({ answers, answeredCount, isLoading, questions, onAnswer, onSubmit }) {
-  const isComplete = questions.length > 0 && answeredCount === questions.length;
+function Quiz({
+  currentQuestion,
+  question,
+  questionCount,
+  selectedAnswer,
+  showExplanation,
+  onCheckAnswer,
+  onNextQuestion,
+  onSelectAnswer,
+}) {
+  const isLastQuestion = currentQuestion === questionCount - 1;
+  const isCorrect = selectedAnswer === question.answer;
 
   return (
-    <section className="quiz-panel" aria-label="문제 풀이">
-      <div className="section-heading">
-        <h2>문제</h2>
-        <p>
-          {questions.length}문항 중 {answeredCount}문항을 풀었습니다.
-        </p>
-      </div>
+    <>
+      <p>
+        {currentQuestion + 1} / {questionCount}
+      </p>
 
-      <div className="progress-track" aria-hidden="true">
-        <span
-          style={{
-            width: questions.length
-              ? `${(answeredCount / questions.length) * 100}%`
-              : "0%",
-          }}
-        />
-      </div>
+      <Question
+        question={question}
+        selectedAnswer={selectedAnswer}
+        showExplanation={showExplanation}
+        onSelectAnswer={onSelectAnswer}
+      />
 
-      {isLoading ? (
-        <p className="empty-box">문제를 불러오는 중입니다.</p>
-      ) : (
-        <div className="question-list">
-          {questions.map((question, index) => (
-            <Question
-              key={question.id}
-              index={index}
-              question={question}
-              selectedAnswer={answers[question.id]}
-              onAnswer={onAnswer}
-            />
-          ))}
-        </div>
+      {!showExplanation && (
+        <button type="button" onClick={onCheckAnswer}>
+          정답 확인
+        </button>
       )}
 
-      <div className="submit-bar">
-        <span>
-          {isComplete
-            ? "모든 문항을 풀었습니다."
-            : "아직 선택하지 않은 문항이 있습니다."}
-        </span>
-        <button type="button" disabled={!isComplete} onClick={onSubmit}>
-          채점하고 저장
-        </button>
-      </div>
-    </section>
+      {showExplanation && (
+        <div className="explanation">
+          <h3>{isCorrect ? "정답입니다." : "오답입니다."}</h3>
+
+          <p>정답: {question.answer + 1}번</p>
+          <p>{question.explanation}</p>
+
+          <button type="button" onClick={onNextQuestion}>
+            {isLastQuestion ? "결과 보기" : "다음 문제"}
+          </button>
+        </div>
+      )}
+    </>
   );
 }
 

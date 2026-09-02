@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 server/data/db.json
+tmp-ncs-text/
 
 # Editor directories and files
 .vscode/*

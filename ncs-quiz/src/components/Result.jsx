@@ -1,56 +1,46 @@
-function Result({ attempt, questions, onRetry }) {
-  const detailsByQuestionId = new Map(
-    attempt.details.map((detail) => [detail.questionId, detail]),
+function Result({ attempt, questionCount, questions, score, onRestart }) {
+  const scoreRate = Math.round((score / questionCount) * 100);
+  const detailMap = new Map(
+    attempt?.details?.map((detail) => [detail.questionId, detail]) || [],
   );
 
   return (
-    <section className="result-panel" aria-label="채점 결과">
-      <div className="result-summary">
-        <div>
-          <p className="eyebrow">채점 결과</p>
-          <h2>{attempt.score}점</h2>
-        </div>
-        <p>
-          {attempt.totalCount}문항 중 <strong>{attempt.correctCount}</strong>문항을
-          맞혔습니다.
-        </p>
-        <button type="button" onClick={onRetry}>
+    <>
+      <section className="result-card">
+        <p>최종 결과</p>
+        <h2>{scoreRate}점</h2>
+        <strong>
+          {questionCount}문제 중 {score}문제 정답
+        </strong>
+        <button type="button" onClick={onRestart}>
           다시 풀기
         </button>
-      </div>
+      </section>
 
-      <div className="review-list">
-        {questions.map((question, index) => {
-          const detail = detailsByQuestionId.get(question.id);
-          const selectedAnswer = detail?.selectedAnswer;
-          const isCorrect = detail?.isCorrect;
+      {attempt && (
+        <div className="review-list">
+          {questions.map((question, index) => {
+            const detail = detailMap.get(question.id);
+            const selectedAnswer = detail?.selectedAnswer;
 
-          return (
-            <article
-              key={question.id}
-              className={`review-card ${isCorrect ? "correct" : "wrong"}`}
-            >
-              <div className="question-meta">
-                <span>{question.category}</span>
-                <strong>{index + 1}번</strong>
-              </div>
-              <h3>{question.question}</h3>
-              <dl>
-                <div>
-                  <dt>내 답</dt>
-                  <dd>{question.choices[selectedAnswer]}</dd>
-                </div>
-                <div>
-                  <dt>정답</dt>
-                  <dd>{question.choices[question.answer]}</dd>
-                </div>
-              </dl>
-              <p className="explanation">{question.explanation}</p>
-            </article>
-          );
-        })}
-      </div>
-    </section>
+            return (
+              <article
+                key={question.id}
+                className={`review-item ${detail?.isCorrect ? "correct" : "wrong"}`}
+              >
+                <span>
+                  {index + 1}번 · {question.category}
+                </span>
+                <h3>{question.question}</h3>
+                <p>내 답: {question.choices[selectedAnswer]}</p>
+                <p>정답: {question.answer + 1}번. {question.choices[question.answer]}</p>
+                <p>{question.explanation}</p>
+              </article>
+            );
+          })}
+        </div>
+      )}
+    </>
   );
 }
 
