@@ -1,0 +1,33 @@
+{
+  "name": "cloud-materials",
+  "version": "1.0.0",
+  "description": "클라우드·데이터베이스 자료 (PART 4)",
+  "private": true,
+  "scripts": {
+    "검증": "node _검증도구/전체검증.js",
+    "검증:출력": "node _검증도구/출력검증.js",
+    "검증:서버": "node _검증도구/서버검증.js",
+    "검증:화면": "node _검증도구/화면검증.js",
+    "검증:정합성": "node _검증도구/정합성검사.js",
+    "점검": "node 09_종합_배포/배포점검.js"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1112.0",
+    "@aws-sdk/s3-request-presigner": "^3.1112.0",
+    "@supabase/supabase-js": "^2.112.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "morgan": "^1.11.0",
+    "multer": "^2.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "pm2": "^7.0.3",
+    "puppeteer-core": "^25.7.0"
+  }
+}

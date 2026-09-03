@@ -1,0 +1,15 @@
+# 비밀 값 — 절대 올리지 않습니다 (01단원)
+.env
+.env.local
+.env.production
+!.env.예시
+
+# macOS
+.DS_Store
+
+node_modules/
+*.db
+*.db-wal
+*.db-shm
+03_표_여러개_다루기/실험용/
+04_저장소를_SQL로/data/

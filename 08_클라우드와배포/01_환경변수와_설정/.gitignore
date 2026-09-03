@@ -1,0 +1,12 @@
+# 비밀이 든 파일은 절대 올리지 않습니다
+# .env 로 시작하는 파일을 전부 막습니다 (.env, .env.local, .env.production ...)
+.env*
+
+# 예시는 올립니다. 진짜 값이 없으니까요.
+# ★ 위에서 .env* 로 막았으니, 이 줄이 없으면 .env.예시 까지 같이 막힙니다.
+!.env.예시
+
+node_modules/
+data/
+uploads/
+*.log
